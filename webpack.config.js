@@ -2,6 +2,8 @@ const path = require('path');
 const MyPlugin = require('./myplugin');
 const webpack = require('webpack')
 const banner = require('./banner')
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 module.exports = {
   mode: 'development',
@@ -35,6 +37,17 @@ module.exports = {
   ],
   },
   plugins: [
-    new webpack.BannerPlugin(banner)
+    new webpack.BannerPlugin(banner),
+    new webpack.DefinePlugin({
+        TWO: '1+1',
+        STRINGTWO: JSON.stringify('1+1')
+    }),
+    new HtmlWebpackPlugin({
+      template: './src/index.html',
+      templateParameters: {
+        env: `${process.env.NODE_ENV}`,
+      }
+    }),
+    new CleanWebpackPlugin(),
   ]
 }
